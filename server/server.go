@@ -20,7 +20,7 @@ func (s server) SayHello(ctx context.Context, req *helloworld.HelloRequest) (*he
 
 func (s *server) SayRepeatHello(req *helloworld.RepeatHelloRequest, stream helloworld.Greeter_SayRepeatHelloServer) error {
 	for i := 0; i < int(req.Count); i++ {
-		msg := fmt.Sprintf(req.Name, i)
+		msg := fmt.Sprintf("server stream response: %v", i)
 		err := stream.Send(&helloworld.HelloReply{Message: "Hello, " + msg + "!"})
 		if err != nil {
 			return err
@@ -31,7 +31,7 @@ func (s *server) SayRepeatHello(req *helloworld.RepeatHelloRequest, stream hello
 
 func main() {
 	log.Println("Starting gRPC server")
-	lis, err := net.Listen("tcp", ":9090")
+	lis, err := net.Listen("tcp", ":50051")
 	if err != nil {
 		log.Fatalf("failed to listent: %v", err.Error())
 	}
