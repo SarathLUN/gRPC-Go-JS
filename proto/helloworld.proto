@@ -14,7 +14,6 @@
 
 syntax = "proto3";
 
-
 option go_package = "github.com/SarathLUN/grpc-go-js;helloworld";
 
 package helloworld;

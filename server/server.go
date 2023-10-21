@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	helloworld "github.com/SarathLUN/grpc-go-js/proto"
 	"google.golang.org/grpc"
 	"log"
@@ -15,6 +16,17 @@ type server struct {
 func (s server) SayHello(ctx context.Context, req *helloworld.HelloRequest) (*helloworld.HelloReply, error) {
 	message := "Hello, " + req.GetName()
 	return &helloworld.HelloReply{Message: message}, nil
+}
+
+func (s *server) SayRepeatHello(req *helloworld.RepeatHelloRequest, stream helloworld.Greeter_SayRepeatHelloServer) error {
+	for i := 0; i < int(req.Count); i++ {
+		msg := fmt.Sprintf(req.Name, i)
+		err := stream.Send(&helloworld.HelloReply{Message: "Hello, " + msg + "!"})
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func main() {
